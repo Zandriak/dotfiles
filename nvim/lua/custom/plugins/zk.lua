@@ -3,18 +3,26 @@ local opts = { noremap = true, silent = false }
 -- Create a new note after asking for its title.
 vim.keymap.set('n', '<leader>zn', function()
   local title = vim.fn.input 'Title: '
-  require('zk').new { title = title }
+  require('zk').new { dir = 'permanent', title = title }
 end, { noremap = true, silent = true })
 
 -- Open notes.
 vim.api.nvim_set_keymap('n', '<leader>zo', "<Cmd>ZkNotes { sort = { 'modified' } }<CR>", opts)
+
 -- Open notes associated with the selected tags.
 vim.api.nvim_set_keymap('n', '<leader>zt', '<Cmd>ZkTags<CR>', opts)
 
 -- Search for the notes matching a given query.
-vim.api.nvim_set_keymap('n', '<leader>zf', "<Cmd>ZkNotes { sort = { 'modified' }, match = { vim.fn.input('Search: ') } }<CR>", opts)
+vim.api.nvim_set_keymap('n', '<leader>zf', "<Cmd>ZkNotes { sort = { 'modified' } }<CR>", opts)
+
+-- Open notes associated with the selected tags.
+vim.api.nvim_set_keymap('n', '<leader>zb', '<Cmd>ZkBacklinks<CR>', opts)
+
 -- Search for the notes matching the current visual selection.
 vim.api.nvim_set_keymap('v', '<leader>zf', ":'<,'>ZkMatch<CR>", opts)
+
+-- create new with title of selection
+vim.api.nvim_set_keymap('v', '<leader>zn', ":'<,'>ZkNewFromTitleSelection {dir = vim.fn.expand('%:p:h')}<CR>", opts)
 
 return {
   'zk-org/zk-nvim',
